@@ -1,10 +1,10 @@
-ARG CADDY_VERSION=2.10.0
+ARG CADDY_VERSION=2.10.2
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
 RUN xcaddy build \
   --with github.com/caddy-dns/alidns
 
-FROM alpine:3.21
+FROM alpine:3.22
 
 RUN apk add --no-cache \
   ca-certificates \
@@ -20,7 +20,7 @@ RUN set -eux; \
   ; \
   wget -q -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/config/Caddyfile"; \
   wget -q -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/welcome/index.html"
-ENV CADDY_VERSION v2.10.0
+ENV CADDY_VERSION v${CADDY_VERSION}
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
