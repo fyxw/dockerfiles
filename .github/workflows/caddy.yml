@@ -23,7 +23,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: load caddy version
-        run: echo "VERSION=$(cat ./caddy/version)" >> $GITHUB_ENV
+        run: gomplate -c config.yaml -i 'VERSION={{ .config.caddy.version }}' >> $GITHUB_ENV
+
+      - name: generate DockerFile
+        run: gomplate -c config.yaml -f caddy/Dockerfile.tmpl -o caddy/Dockerfile
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
