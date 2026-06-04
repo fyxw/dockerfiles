@@ -1,10 +1,11 @@
-ARG CADDY_VERSION=2.10.2
+# https://github.com/caddyserver/caddy-docker
+ARG CADDY_VERSION=2.11.4
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
 RUN xcaddy build \
   --with github.com/caddy-dns/alidns
 
-FROM alpine:3.22
+FROM alpine:3.23
 
 RUN apk add --no-cache \
   ca-certificates \
@@ -18,6 +19,7 @@ RUN set -eux; \
   /etc/caddy \
   /usr/share/caddy \
   ; \
+  chmod 1777 /config/caddy /data/caddy; \
   wget -q -O /etc/caddy/Caddyfile "https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/config/Caddyfile"; \
   wget -q -O /usr/share/caddy/index.html "https://github.com/caddyserver/dist/raw/33ae08ff08d168572df2956ed14fbc4949880d94/welcome/index.html"
 ENV CADDY_VERSION v${CADDY_VERSION}
