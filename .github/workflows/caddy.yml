@@ -38,12 +38,11 @@ jobs:
       - name: Build caddy Container image
         id: build-image
         uses: redhat-actions/buildah-build@v3
-        working-directory: ./caddy
         with:
           image: caddy
-          tags: latest ${{ env.VERSION }}
+          tags: latest ${{ env.VERSION }}Unexpected value 'working-directory'
           containerfiles: |
-            ./Dockerfile
+            ./caddy/Dockerfile
           platforms: linux/amd64
           oci: true
 
